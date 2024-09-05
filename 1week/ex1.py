@@ -1,1 +1,1 @@
-print("이름 : ")
+print("Hello world")
