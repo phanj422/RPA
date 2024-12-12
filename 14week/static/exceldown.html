@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel File Download</title>
+</head>
+<body>
+
+    <h2>Download Excel File</h2>
+    <button onclick="downloadXL()">Download Excel File</button>
+	<input type="text" id="filename" placeholder="Enter filename">
+
+<script>
+
+    async function downloadXL() {
+
+        const response = await fetch('/getexcelfile/', {
+            method: 'POST'
+        });
+
+        const data = await response.json();
+        let filename = data ? `${data.filename}` : '' ;
+        document.getElementById('filename').value = filename; 
+        
+        if(filename.length > 0){
+            downloadFile(filename);    
+        }
+    }
+
+    function downloadFile(filename) {
+
+        if (filename.length > 0) {
+            // 서버에서 파일을 다운로드하는 URL
+            const url = `/files/${filename}`;
+
+            // 파일 다운로드를 위한 a 태그 생성 및 클릭 이벤트 발생
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        } else {
+            alert('Please enter a filename');
+        }
+    }
+
+</script>
+</body>
+</html>
